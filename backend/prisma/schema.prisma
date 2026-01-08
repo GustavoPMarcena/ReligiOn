@@ -1,0 +1,66 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  phone     String?
+  image     String?
+  role      String
+  userType  UserType
+
+  Inspiracional Inspiracional[]
+  Sermao Sermao[]
+  Eventos Evento[]
+}
+
+enum UserType {
+  LEADER
+  MEMBER
+}
+
+model Inspiracional {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Sermao {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  date      DateTime
+  mediaFile String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Evento {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  publico     String
+  date        DateTime
+  latitude    Float
+  longitude   Float
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
