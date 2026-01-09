@@ -1,6 +1,7 @@
-import Routes from './navigation';
+import Routes from './routes';
 import { useFonts } from 'expo-font';
 import { Fonts } from './assets/fonts/font';
+import { AuthProviderContext } from './context/AuthProvider';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -8,7 +9,10 @@ export default function App() {
   });
 
   if (!fontsLoaded) return null;
+
   return (
-    <Routes />
+    <AuthProviderContext>
+      <Routes />
+    </AuthProviderContext>
   );
 }

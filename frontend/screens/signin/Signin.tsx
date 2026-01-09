@@ -4,7 +4,7 @@ import { globalStyles } from "../../global/css/globalStyles";
 import { styles } from "./styles";
 import Input from "../../components/input/Input";
 import { useNavigation } from "@react-navigation/native";
-import RadioInput from "../../components/radioInput/radioInput";
+import RadioInput from "../../components/radioInput/RadioInput";
 
 export default function Signin() {
     const [userType, setUserType] = useState<"lider" | "membro">("lider");
