@@ -4,17 +4,13 @@ export const globalStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#F8F8F8",
-        alignItems: "center",
+        paddingBottom: 150
     },
-
     logo: {
-        marginTop: 60,
-        marginBottom: 40,
         width: 120,
         height: 120,
         resizeMode: "contain",
     },
-
     content: {
         width: "100%",
         paddingHorizontal: 24,
@@ -45,15 +41,15 @@ export const globalStyles = StyleSheet.create({
     },
     form: {
         fontFamily: "JosefinSans",
-        gap: 0,
+        gap: 10,
         marginBottom: 24,
     },
     footer: {
+        marginTop: 10,
         fontFamily: "JosefinSans",
         flexDirection: "row",
         justifyContent: "center",
     },
-
     link: {
         fontFamily: "JosefinSans",
         color: "#1E4F9A",

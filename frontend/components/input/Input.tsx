@@ -5,7 +5,7 @@ import { useState } from "react";
 import { styles } from "./styles";
 
 interface Props {
-    type: 'default' | 'email-address' | undefined;
+    type: 'default' | 'email-address' | 'numeric' | undefined;
     label: string,
     placeholder?: string,
     isPassword?: boolean,

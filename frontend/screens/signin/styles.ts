@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
         marginBottom: 20
     },
     logo: {
-        marginTop: 60,
         marginBottom: 40,
         alignSelf:'center'
     }
