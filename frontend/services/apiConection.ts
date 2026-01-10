@@ -10,18 +10,18 @@ type createUserType = {
 }
 
 
-export const createUserApi = async (user: createUserType) : Promise<createUserType> => {
-    const { data } = await api.post("/users", user)
+export const createUserApi = async (user: createUserType): Promise<createUserType> => {
+    const { data } = await api.post<createUserType>("/users", user)
     return data;
 }
 
-export const getUserApi = async (email: string) : Promise<createUserType> => {
-    const {data} = await api.get(`/users/${email}`);
+export const getUserApi = async (email: string): Promise<createUserType> => {
+    const { data } = await api.get(`/users/${email}`);
     return data;
 }
 
-export const updateUserApi = async(id: string, updatedUser: createUserType): Promise<createUserType> => {
-    const {data} = await api.put(`/users/${id}`, updatedUser);
+export const updateUserApi = async (id: string, updatedUser: createUserType): Promise<createUserType> => {
+    const { data } = await api.put(`/users/${id}`, updatedUser);
     return data;
 }
 

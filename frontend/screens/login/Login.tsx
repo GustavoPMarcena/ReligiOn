@@ -1,12 +1,22 @@
 import { Image, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from "react-native";
+import { useState } from "react";
 import { globalStyles } from "../../global/css/globalStyles";
 import { styles } from "./styles";
 import Input from "../../components/input/Input";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../../components/button/Button"; 
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const navigation = useNavigation<any>();
+    const {login} = useAuth();
+
+
+    async function handleSubmit() {
+        await login(email, password);
+    }
 
     return (
         <ScrollView style={globalStyles.container}>
@@ -31,18 +41,20 @@ export default function Login() {
                         label="Email"
                         placeholder="anaferreira@gmail.com"
                         type="email-address"
-                        onChange={() => { }}
+                        value={email}
+                        onChangeText={setEmail}
                     />
 
                     <Input
                         type="default"
                         label="Senha"
                         isPassword
-                        onChange={() => { }}
+                        value={password}
+                        onChangeText={setPassword}
                     />
                 </View>
 
-                <Button title="Entrar" onClick={() => {}}/>
+                <Button title="Entrar" onClick={handleSubmit}/>
 
                 <View style={globalStyles.footer}>
                     <Text style={globalStyles.linkText}>Não possui uma conta? </Text>

@@ -6,10 +6,27 @@ import Input from "../../components/input/Input";
 import { useNavigation } from "@react-navigation/native";
 import RadioInput from "../../components/radioInput/RadioInput";
 import Button from "../../components/button/Button";
+import { createUserApi } from "../../services/apiConection";
+
 
 export default function Signin() {
-    const [userType, setUserType] = useState<"lider" | "membro">("lider");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [role, setRole] = useState("");
+    const [phone, setPhone] = useState("");
+    const [password, setPassword] = useState("");
+    const [type, setType] = useState<"lider" | "membro">("lider");
+    const [userType, setUserType] = useState<"LEADER" | "MEMBER">("LEADER");
     const navigation = useNavigation<any>();
+
+    async function handleSubmit() {
+        setUserType((type == "membro") ? "MEMBER" : "LEADER");
+        const createdUser = await createUserApi({name, email, role, phone, password, userType})
+        setEmail(""); setName("");
+        setRole(""); setPhone(""); setPassword("");
+        console.log(createdUser);
+        navigation.navigate('Login');
+    }
 
     return (
         <KeyboardAvoidingView behavior="padding" enabled>
@@ -30,7 +47,6 @@ export default function Signin() {
                     <View style={styles.container}>
                         <Text style={globalStyles.title}>Criar conta</Text>
                         <Text style={globalStyles.subtitle}>Insira seus dados para criar sua conta </Text>
-                        <Text style={globalStyles.subtitle}>Campos com * indicam dados obrigatórios</Text>
                     </View>
 
                     <KeyboardAvoidingView style={globalStyles.form}>
@@ -38,42 +54,47 @@ export default function Signin() {
                             label="Nome"
                             placeholder="Ana Ferreira"
                             type="default"
-                            onChange={() => { }}
+                            value={name}
+                            onChangeText={setName}
                         />
 
                         <Input
                             label="Email"
                             placeholder="anaferreira@gmail.com"
                             type="email-address"
-                            onChange={() => { }}
+                            value={email}
+                            onChangeText={setEmail}
                         />
 
                         <Input
                             label="Função"
                             placeholder="Digite aqui sua função..."
                             type="default"
-                            onChange={() => { }}
+                            value={role}
+                            onChangeText={setRole}
                         />
                         <Input
                             label="Telefone"
                             placeholder="80028922"
                             type="numeric"
-                            onChange={() => { }}
+                            value={phone}
+                            onChangeText={setPhone}
                         />
                         <RadioInput
-                            value={userType}
-                            onChange={setUserType}
+                            value={type}
+                            onChange={setType}
                         />
 
                         <Input
                             type="default"
                             label="Senha"
                             isPassword
-                            onChange={() => { }}
+                            value={password}
+                            onChangeText={setPassword}
                         />
                     </KeyboardAvoidingView>
 
-                    <Button title="Criar conta" onClick={() => { }} />
+                    <Button title="Criar conta" onClick={handleSubmit} />
 
                     <View style={globalStyles.footer}>
                         <Text style={globalStyles.linkText}>Já possui uma conta? </Text>
