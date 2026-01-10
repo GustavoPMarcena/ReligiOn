@@ -20,6 +20,10 @@ export const globalStyles = StyleSheet.create({
         
         fontSize: 25,
     },
+    titleStrong: {
+        fontFamily: "JosefinBold",
+        fontSize: 20
+    },
     subtitle: {
         fontFamily: 'JosefinSans',
         color: '#7C7C7C',
@@ -44,5 +48,15 @@ export const globalStyles = StyleSheet.create({
     },
     linkText: {
         fontFamily: "JosefinSans",
+    },
+    subtitleBlue: {
+        fontFamily: "JosefinSemiBold",
+        color: '#1D559F',
+        fontSize: 14,
+    },
+    contentBlue: {
+        fontFamily: "JosefinSans",
+        color: '#1D559F',
+        fontSize: 12
     }
 })
