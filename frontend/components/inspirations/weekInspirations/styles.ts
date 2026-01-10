@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   card: {
+    width: 353,
     flexDirection: "row",
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
@@ -12,6 +13,7 @@ export const styles = StyleSheet.create({
   },
 
   sideBar: {
+    marginLeft:10,
     width: 6,
     borderRadius: 3,
     backgroundColor: "#2E6BD9",
