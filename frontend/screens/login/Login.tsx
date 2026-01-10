@@ -3,15 +3,18 @@ import { globalStyles } from "../../global/css/globalStyles";
 import { styles } from "./styles";
 import Input from "../../components/input/Input";
 import { useNavigation } from "@react-navigation/native";
- 
+import Button from "../../components/button/Button"; 
+
 export default function Login() {
     const navigation = useNavigation<any>();
 
     return (
         <ScrollView style={globalStyles.container}>
+            <KeyboardAvoidingView behavior="padding" enabled>
             <Image
-                source={require("../../assets/logo.svg")}
+                source={require("../../assets/logo.png")}
                 style={[globalStyles.logo, styles.logo]}
+                resizeMode="contain"
             />
 
             <View style={[globalStyles.content,]}>
@@ -23,7 +26,7 @@ export default function Login() {
                 </View>
 
 
-                <KeyboardAvoidingView style={globalStyles.form}>
+                <View style={globalStyles.form}>
                     <Input
                         label="Email"
                         placeholder="anaferreira@gmail.com"
@@ -37,17 +40,16 @@ export default function Login() {
                         isPassword
                         onChange={() => { }}
                     />
-                </KeyboardAvoidingView>
+                </View>
 
-                <TouchableOpacity  style={globalStyles.button}>
-                    <Text style={globalStyles.textButton}>Entrar</Text>
-                </TouchableOpacity>
+                <Button title="Entrar" onClick={() => {}}/>
 
                 <View style={globalStyles.footer}>
                     <Text style={globalStyles.linkText}>Não possui uma conta? </Text>
                     <Text onPress={() => { navigation.navigate('Signin') }} style={globalStyles.link}>Criar conta</Text>
                 </View>
             </View>
+            </KeyboardAvoidingView>
         </ScrollView>
     );
 }

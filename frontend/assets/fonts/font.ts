@@ -1,3 +1,5 @@
 export const Fonts = {
-    josephin: require("./JosefinSans-VariableFont_wght.ttf")
+    josephinRegular: require("./JosefinSans-Medium.ttf"),
+    josephinBold: require("./JosefinSans-Bold.ttf"),
+    josephinSemiBold: require("./JosefinSans-SemiBold.ttf")
 }

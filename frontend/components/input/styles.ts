@@ -7,20 +7,21 @@ export const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     label: {
-        fontFamily: "JosefinSans",
-        fontWeight: 700,
+        fontFamily: "JosefinSemiBold",
         fontSize: 16,
         marginBottom: 10
     },
     input: {
         fontFamily: "JosefinSans",
         width: 'auto',
-        height: 44,
+        height: 54,
         flex: 1,
-        padding: 20,
+        paddingLeft: 20,
         opacity: 1,
         borderRadius: 6,
+        fontSize: 16,
         borderWidth: 1,
+        color: '#544C4C',
         borderColor: '#544C4C24',
     },
     passwordInput: {

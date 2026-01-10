@@ -2,9 +2,8 @@ import { StyleSheet } from "react-native"
 
 export const globalStyles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: "#F8F8F8",
-        paddingBottom: 150
+        paddingBottom: 40,
     },
     logo: {
         width: 120,
@@ -16,29 +15,17 @@ export const globalStyles = StyleSheet.create({
         paddingHorizontal: 24,
     },
     title: {
-        fontFamily: "JosefinSans",
-        fontWeight: 500,
-        fontStyle: "normal",
-        fontSize: 24,
+        fontFamily: "JosefinSemiBold",
+        color: '#2A2A2A',
+        
+        fontSize: 25,
     },
     subtitle: {
-        fontFamily: "JosefinSans",
+        fontFamily: 'JosefinSans',
         color: '#7C7C7C',
-        fontWeight: 400,
         fontSize: 15
     },
-    button: {
-        borderRadius: 6,
-        backgroundColor: '#1D559F',
-        height: 45,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    textButton: {
-        fontFamily: "JosefinSans",
-        color: 'white',
-        fontWeight: 500,
-    },
+
     form: {
         fontFamily: "JosefinSans",
         gap: 10,

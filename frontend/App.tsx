@@ -5,7 +5,9 @@ import { AuthProviderContext } from './context/AuthProvider';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    'JosefinSans': Fonts.josephin,
+    'JosefinSans': Fonts.josephinRegular,
+    'JosefinBold': Fonts.josephinBold,
+    'JosefinSemiBold': Fonts.josephinSemiBold
   });
 
   if (!fontsLoaded) return null;
