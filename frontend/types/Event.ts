@@ -5,8 +5,8 @@ export type EventResponse = {
   publico: string;
   date: string; 
   latitude: string;
-  longitude: string;
-  userId: string;
+  longitude: number;
+  userId: number;
   user?: {
     name: string;
   };
@@ -16,7 +16,7 @@ export type EventRequest = {
   title: string;
   description: string;
   publico: string;
-  date: string; // ISO string
-  latitude: string;
-  longitude: string;
+  date: string; 
+  latitude: number;
+  longitude: number;
 };

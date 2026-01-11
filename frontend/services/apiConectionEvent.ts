@@ -11,7 +11,6 @@ export const getEventsApi = async (): Promise<EventResponse[]> => {
   return data;
 };
 
-
 export const getEventByIdApi = async (id: string): Promise<EventResponse> => {
   const { data } = await api.get<EventResponse>(`/eventos/${id}`);
   return data;
