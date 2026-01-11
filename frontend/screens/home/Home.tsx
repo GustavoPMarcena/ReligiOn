@@ -5,36 +5,48 @@ import { useAuth } from "../../hooks/useAuth";
 import DayInspirational from "../../components/inspirations/dayInspirational/DayInspirational";
 import InterestButton from "../../components/interestButton/interestButton";
 import WeekInspirations from "../../components/inspirations/weekInspirations/WeekInspirations";
+import { useEffect, useState } from "react";
+import Header from "../../components/header/Header";
+import { getUserApi, updateUserApi } from "../../services/apiConectionUser";
+
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  userType: 'LEADER' | 'MEMBER';
+  phone: string;
+};
 
 export default function Home() {
   const { user } = useAuth();
+  const [actualUser, setActualUser] = useState<User | null>();
 
+  useEffect(() => {
+    if (!user) return;
+
+    const testUserApi = async () => {
+      try {
+        const fetchedUser = await getUserApi(user.email);
+        setActualUser(fetchedUser);
+      } catch (error) {
+        console.error("Erro ao buscar usuário:", error);
+      }
+    };
+
+    testUserApi();
+  }, [user]);
+  
   return (
     <ScrollView style={globalStyles.container} showsVerticalScrollIndicator={false}>
       <KeyboardAvoidingView behavior="padding" enabled>
 
-        <View style={styles.header}>
-          <Image
-            source={require("../../assets/header-logo.png")}
-            style={styles.headerBackground}
-          />
-
-          <View style={styles.headerOverlay}>
-            <TouchableOpacity style={styles.profileContainer}>
-              <Image
-                source={require("../../assets/profile-photo.png")}
-                style={styles.profileImage}
-              />
-            </TouchableOpacity>
-
-            <Text style={styles.title}>ReligiOn</Text>
-          </View>
-        </View>
+        <Header />
 
         <View style={styles.content}>
 
           <Text style={[globalStyles.titleStrong, styles.greeting]}>
-            Olá, {user?.name}
+            Olá, {actualUser?.name}
           </Text>
 
           <View style={styles.sectionSpacing}>

@@ -6,7 +6,7 @@ import Input from "../../components/input/Input";
 import { useNavigation } from "@react-navigation/native";
 import RadioInput from "../../components/radioInput/RadioInput";
 import Button from "../../components/button/Button";
-import { createUserApi } from "../../services/apiConection";
+import { createUserApi } from "../../services/apiConectionUser";
 
 
 export default function Signin() {
