@@ -8,4 +8,9 @@ export type InspirationalResponse  ={
     title: string,
     content: string,
     userId: string,
+    createdAt: string,
+    user: {
+        name: string;
+        image: string | null;
+    }
 }
