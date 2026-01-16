@@ -4,6 +4,7 @@ import Inspiracional from '../screens/Inspiracional/Inspiracional';
 import CreateInspiration from '../screens/createInspiration/CreateInspiration';
 import Events from '../screens/eventts/Events';
 import EventDetails from '../screens/eventDetails/EventDetails';
+import CreateEvent from '../screens/CreateEvent/CreateEvent';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,8 @@ export default function AppRoutes() {
       <Stack.Screen options={{headerShown: false}} name="CriarInspiracional" component={CreateInspiration}/>
       <Stack.Screen options={{headerShown: false}} name="Eventos" component={Events}/>
       <Stack.Screen options={{headerShown: false}} name="EventDetails" component={EventDetails} />
+      <Stack.Screen options={{headerShown: false}} name="CreateEvent" component={CreateEvent} />
+
     </Stack.Navigator>
   );
 }

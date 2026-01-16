@@ -126,9 +126,9 @@ export default function Events() {
 
       {user?.userType === "LEADER" && (
         <FloatingButton
-          onPress={() => console.log("Criar novo evento")}
+            onPress={() => navigation.navigate("CreateEvent")}
         />
-      )}
+    )}
     </>
   );
 }
