@@ -9,6 +9,7 @@ import FloatingButton from "../../components/FloatingButton/FloatingButton";
 import { getEventsApi } from "../../services/apiConectionEvent";
 import { EventResponse } from "../../types/Event";
 import { useAuth } from "../../hooks/useAuth";
+import { useNavigation } from "@react-navigation/native";
 
 const TAG_COLORS = [
   "#30c571",
@@ -42,6 +43,8 @@ const getColorFromTag = (text: string) => {
 
 export default function Events() {
   const { user } = useAuth();
+  const navigation = useNavigation<any>();
+
   const [events, setEvents] = useState<EventResponse[]>([]);
   const [search, setSearch] = useState("");
   const [refreshing, setRefreshing] = useState(false);
@@ -111,7 +114,9 @@ export default function Events() {
                 dateText={new Date(event.date).toLocaleDateString("pt-BR")}
                 color={getColorFromTag(event.publico)}
                 onPress={() =>
-                  console.log("Evento clicado:", event.id)
+                  navigation.navigate("EventDetails", {
+                    id: event.id,
+                  })
                 }
               />
             ))
