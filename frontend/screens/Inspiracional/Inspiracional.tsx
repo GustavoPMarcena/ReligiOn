@@ -5,12 +5,12 @@ import Inspiration from "../../components/inspirations/inspiration/Inspiration";
 import { getInspirationsApi } from "../../services/apiConectionInspirational";
 import { InspirationalResponse } from "../../types/Inspirational";
 import { getImageSource } from "../../utils/getImageProfile";
+import styles from "./styles";
 
 export default function Inspiracional() {
     const [inspiracionais, setInspiracionais] = useState<
         InspirationalResponse[]
     >([]);
-    const [busca, setBusca] = useState("");
 
     const formatDate = (date: string) => { 
         const d = new Date(date); 
@@ -32,6 +32,10 @@ export default function Inspiracional() {
         getInspiracionais();
     }, []);
 
+    const botao = () =>{
+        console.log("teste de botão");
+    }
+
     return (
         <KeyboardAvoidingView
             style={[globalStyles.container, { flex: 1 }]}
@@ -39,13 +43,13 @@ export default function Inspiracional() {
             enabled
         >
             {inspiracionais.length === 0 ? (
-                <Text style={{ color: "#999", textAlign: "center", marginTop: 20 }}>
+                <Text style={styles.notFound}>
                     Nenhum inspiracional encontrado.
                 </Text>
             ) : (
                 <FlatList
                     data={inspiracionais}
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, marginVertical: 10 }}
                     keyExtractor={(item) => item.id}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => {

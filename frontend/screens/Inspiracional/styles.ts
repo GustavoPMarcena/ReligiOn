@@ -5,6 +5,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 10,
     backgroundColor: "#ffff"
+  },
+  notFound: {
+    color: "#999", 
+    textAlign: "center", 
+    marginTop: 50,
+    fontFamily: "JosefinBold"
   }
 });
 
