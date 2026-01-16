@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native"
 
 export const globalStyles = StyleSheet.create({
     container: {
-        backgroundColor: "#F8F8F8",
+        backgroundColor: "#F2F2F2",
         paddingBottom: 40,
     },
     logo: {

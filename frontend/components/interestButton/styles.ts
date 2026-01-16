@@ -9,7 +9,8 @@ export const styles = StyleSheet.create({
         borderWidth: 2,
         height: 41,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#ffffff'
     },
     textButton: {
         fontFamily: "JosefinBold",
