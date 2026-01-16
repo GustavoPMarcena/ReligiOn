@@ -8,6 +8,7 @@ import WeekInspirations from "../../components/inspirations/weekInspirations/Wee
 import { useEffect, useState } from "react";
 import Header from "../../components/header/Header";
 import { getUserApi, updateUserApi } from "../../services/apiConectionUser";
+import { useNavigation } from "@react-navigation/native";
 
 type User = {
   id: string;
@@ -21,6 +22,7 @@ type User = {
 export default function Home() {
   const { user } = useAuth();
   const [actualUser, setActualUser] = useState<User | null>();
+  const navigation = useNavigation<any>();
 
   useEffect(() => {
     if (!user) return;
@@ -60,7 +62,7 @@ export default function Home() {
           <View style={styles.interestContainer}>
             <InterestButton title="Sermões" onClick={() => {}} />
             <InterestButton title="Eventos" onClick={() => {}} />
-            <InterestButton title="Inspiracionais" onClick={() => {}} />
+            <InterestButton title="Inspiracionais" onClick={() => { navigation.navigate('Inspiracional')}} />
           </View>
 
           <View style={styles.sectionHeader}>

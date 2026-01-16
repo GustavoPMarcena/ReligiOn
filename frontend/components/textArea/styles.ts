@@ -11,35 +11,18 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         marginBottom: 10
     },
-    input: {
+    textArea: {
         fontFamily: "JosefinSans",
-        width: 'auto',
-        height: 54,
-        flex: 1,
-        paddingLeft: 25,
-        opacity: 1,
+        minHeight: 100,
+        maxHeight: 450,
+        paddingLeft: 20,
+        paddingTop: 15,
         borderRadius: 6,
         fontSize: 16,
         borderWidth: 1,
         color: '#544C4C',
         borderColor: '#544C4C24',
+        textAlignVertical: "top",
         backgroundColor: '#ffffff'
     },
-    passwordInput: {
-        position: 'absolute',
-        right: 0,
-
-    },
-    passwordContainer: {
-        position: 'relative',
-        width: '100%',
-    },
-    passwordButton: {
-        position: 'absolute',
-        right: 12,
-        top: '25%'
-    },
-    passwordIconVisible: {
-        fontSize: 20
-    }
 });

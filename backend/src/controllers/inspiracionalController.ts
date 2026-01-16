@@ -33,10 +33,22 @@ export const createInspiracional = async (req: any, res: any) => {
 export const getInspiracionais = async (req: any, res: any) => {
     try {
       const inspiracionais = await prisma.inspiracional.findMany({
-        include: {
+        // include: {
+        //   user: {
+        //     select: {
+        //       name: true,
+        //     },
+        //   },
+        // },
+        select: {
+          id: true,
+          title: true,
+          content: true,
+          createdAt: true,
           user: {
             select: {
               name: true,
+              image: true,
             },
           },
         },
