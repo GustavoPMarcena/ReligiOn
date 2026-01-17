@@ -7,8 +7,11 @@ interface EventTicketProps {
   color?: string;
   tagText: string;
   title: string;
-  dateText: string;
+  dateText?: string;
   onPress?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  showActionButtons?: boolean; 
 }
 
 const EventTicket: React.FC<EventTicketProps> = ({
@@ -17,6 +20,9 @@ const EventTicket: React.FC<EventTicketProps> = ({
   title,
   dateText,
   onPress,
+  onEdit,
+  onDelete,
+  showActionButtons = false, 
 }) => {
   return (
     <View style={styles.wrapper}>
@@ -24,10 +30,13 @@ const EventTicket: React.FC<EventTicketProps> = ({
         <View style={[styles.ticket, { backgroundColor: color }]} />
         <EventCard
           tagText={tagText}
-          tagColor={color} 
+          tagColor={color}
           title={title}
           dateText={dateText}
           onPress={onPress}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          showActionButtons={showActionButtons}
         />
       </View>
     </View>

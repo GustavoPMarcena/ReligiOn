@@ -6,6 +6,7 @@ import Events from '../screens/eventts/Events';
 import EventDetails from '../screens/eventDetails/EventDetails';
 import CreateEvent from '../screens/CreateEvent/CreateEvent';
 import EditEvent from '../screens/EditEvent/EditEvent';
+import MyEvents from '../screens/MyEvents/MyEvents';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +20,7 @@ export default function AppRoutes() {
       <Stack.Screen options={{headerShown: false}} name="EventDetails" component={EventDetails} />
       <Stack.Screen options={{headerShown: false}} name="CreateEvent" component={CreateEvent} />
       <Stack.Screen options={{headerShown: false}} name="EditEvent" component={EditEvent} />
-
+      <Stack.Screen options={{headerShown: false}} name="MyEvents" component={MyEvents} />
     </Stack.Navigator>
   );
 }
