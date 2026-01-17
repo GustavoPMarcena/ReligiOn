@@ -1,7 +1,10 @@
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Header() {
+    const navigation = useNavigation<any>();
+
     return (
         <View style={styles.header}>
             <Image
@@ -10,7 +13,7 @@ export default function Header() {
             />
 
             <View style={styles.headerOverlay}>
-                <TouchableOpacity style={styles.profileContainer}>
+                <TouchableOpacity style={styles.profileContainer} onPress={() => {navigation.navigate("Profile")}}>
                     <Image
                         source={require("../../assets/profile-photo.png")}
                         style={styles.profileImage}

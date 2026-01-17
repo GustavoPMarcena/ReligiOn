@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   title: {
+    fontFamily: "JosefinBold",
     fontSize: 16,
     color: "#000",
     fontWeight: "500",

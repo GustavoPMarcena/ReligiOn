@@ -4,13 +4,16 @@ import Inspiracional from '../screens/Inspiracional/Inspiracional';
 import CreateInspiration from '../screens/createInspiration/CreateInspiration'
 import MeusInspiracionais from '../screens/meusInspiracionais/MeusInspiracionais';
 import EditInspiracional from '../screens/editInspiracional/EditInspiracional';
+import Profile from '../screens/profile/Profile';
 
 const Stack = createNativeStackNavigator();
 
 export default function AppRoutes() {
+  
   return (
     <Stack.Navigator>
       <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
+      <Stack.Screen options={{headerShown: false}} name="Profile" component={Profile} />
       <Stack.Screen options={{headerShown: false}} name="Inspiracional" component={Inspiracional} />
       <Stack.Screen options={{headerShown: false}} name="CriarInspiracional" component={CreateInspiration}/>
       <Stack.Screen options={{headerShown: false}} name='MeusInspiracionais' component={MeusInspiracionais}/>

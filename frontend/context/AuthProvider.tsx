@@ -1,20 +1,12 @@
 import { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { api } from "../api";
-type createUserType = {
-    name: string;
-    email: string;
-    password?: string;
-    role: string;
-    userType: 'LEADER' | 'MEMBER';
-    phone: string;
-}
-
+import { createUserResponseType } from "../types/User";
 
 
 interface Context {
     tokenState: string | null;
-    user: createUserType | null;
+    user: createUserResponseType | null;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
 }
@@ -27,14 +19,14 @@ interface IProps {
 
 export function AuthProviderContext({ children }: IProps) {
     const [tokenState, setTokenState] = useState<string | null>(null);
-    const [user, setUser] = useState<createUserType | null>(null);
+    const [user, setUser] = useState<createUserResponseType | null>(null);
 
     async function login(email: string, password: string) {
         const data = { email, password }
 
         try {
             const response = await api.post("/login", data);
-            const { token, user } = response.data as { token: string; user: createUserType };
+            const { token, user } = response.data as { token: string; user: createUserResponseType };
 
             api.defaults.headers.common.Authorization = `Bearer ${token}`;
 
