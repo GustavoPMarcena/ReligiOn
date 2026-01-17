@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticateJWT } from '../middlewares/authMiddleware';
-import { createInspiracional, getInspiracionais, getInspiracionalById, updateInspiracional, deleteInspiracional } from '../controllers/inspiracionalController';
+import { createInspiracional, getInspiracionais, getInspiracionalById, updateInspiracional, deleteInspiracional, getInspiracionaisByUserId } from '../controllers/inspiracionalController';
 
 const router = Router();
 
@@ -9,6 +9,9 @@ router.post('/inspiracionais', authenticateJWT, createInspiracional);
 
 // Obter todos
 router.get('/inspiracionais', authenticateJWT, getInspiracionais);
+
+// Obter os inspiracionais de um usuário 
+router.get('/inspiracionais/:userId', authenticateJWT, getInspiracionaisByUserId);
 
 //  Inspiracional específico
 router.get('/inspiracionais/:id', authenticateJWT, getInspiracionalById);

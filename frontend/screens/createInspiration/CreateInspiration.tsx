@@ -1,5 +1,4 @@
 import { KeyboardAvoidingView, ScrollView, Text, View } from "react-native";
-import HeaderPage from "../../components/headerPage/HeaderPage";
 import Input from "../../components/input/Input";
 import { globalStyles } from "../../global/css/globalStyles";
 import { styles } from "./styles";
@@ -24,7 +23,6 @@ export default function CreateInspiration() {
     return (
             <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-                    <HeaderPage title="Criar Inspiração"/>
                     <View style={[globalStyles.content, {paddingTop: 20}]}>
                         <View style={globalStyles.form}>
                             <Input

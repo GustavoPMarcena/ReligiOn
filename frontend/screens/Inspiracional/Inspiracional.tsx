@@ -6,11 +6,14 @@ import { getInspirationsApi } from "../../services/apiConectionInspirational";
 import { InspirationalResponse } from "../../types/Inspirational";
 import { getImageSource } from "../../utils/getImageProfile";
 import styles from "./styles";
+import Button from "../../components/button/Button";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Inspiracional() {
     const [inspiracionais, setInspiracionais] = useState<
         InspirationalResponse[]
     >([]);
+    const navigation = useNavigation<any>();
 
     const formatDate = (date: string) => { 
         const d = new Date(date); 
@@ -42,6 +45,7 @@ export default function Inspiracional() {
             behavior="padding"
             enabled
         >
+            <Button title="Criar inspiracional" onClick={() => { navigation.navigate('CriarInspiracional')}}/>
             {inspiracionais.length === 0 ? (
                 <Text style={styles.notFound}>
                     Nenhum inspiracional encontrado.
@@ -54,8 +58,6 @@ export default function Inspiracional() {
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => {
                         const imageProfile = getImageSource(item.user.image);
-                        console.log("Imagem URL",imageProfile);
-                        console.log("User", item.user);
                         return (
                             <Inspiration
                                 title={item.title}

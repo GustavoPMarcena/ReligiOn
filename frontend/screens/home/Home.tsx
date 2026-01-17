@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import Header from "../../components/header/Header";
 import { getUserApi, updateUserApi } from "../../services/apiConectionUser";
 import { useNavigation } from "@react-navigation/native";
+import Button from "../../components/button/Button";
 
 type User = {
   id: string;
@@ -38,6 +39,11 @@ export default function Home() {
 
     testUserApi();
   }, [user]);
+  const {logout} = useAuth();
+
+  async function handleSubmit() {
+      await logout();
+  }
   
   return (
     <ScrollView style={globalStyles.container} showsVerticalScrollIndicator={false}>
@@ -50,6 +56,9 @@ export default function Home() {
           <Text style={[globalStyles.titleStrong, styles.greeting]}>
             Olá, {actualUser?.name}
           </Text>
+
+          <Button title="logout" onClick={logout}/>
+          <Button title="Meus Inspiraionais" onClick={() => {navigation.navigate('MeusInspiracionais')}}/>
 
           <View style={styles.sectionSpacing}>
             <DayInspirational
