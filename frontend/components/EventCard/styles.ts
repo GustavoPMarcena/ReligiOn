@@ -41,6 +41,23 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#555",
   },
+
+  actionButtonsRow: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    marginBottom: "2%",
+    gap: 16, 
+  },
+  actionButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  actionText: {
+    marginLeft: 6,
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#000000",
+  },
 });
 
 export default styles;
