@@ -6,8 +6,10 @@ import { getInspirationsApi } from "../../services/apiConectionInspirational";
 import { InspirationalResponse } from "../../types/Inspirational";
 import { getImageSource } from "../../utils/getImageProfile";
 import styles from "./styles";
-import Button from "../../components/button/Button";
 import { useNavigation } from "@react-navigation/native";
+import TopBar from "../../components/TopBar/TopBar";
+import FloatingButton from "../../components/FloatingButton/FloatingButton";
+import SearchBar from "../../components/searchBar/SearchBar";
 
 export default function Inspiracional() {
     const [inspiracionais, setInspiracionais] = useState<
@@ -35,17 +37,15 @@ export default function Inspiracional() {
         getInspiracionais();
     }, []);
 
-    const botao = () =>{
-        console.log("teste de botão");
-    }
-
     return (
         <KeyboardAvoidingView
             style={[globalStyles.container, { flex: 1 }]}
             behavior="padding"
             enabled
         >
-            <Button title="Criar inspiracional" onClick={() => { navigation.navigate('CriarInspiracional')}}/>
+            <TopBar title="Inspiracionais"/>
+            <SearchBar/>
+            <FloatingButton onPress={() => {navigation.navigate('CriarInspiracional')}}/>
             {inspiracionais.length === 0 ? (
                 <Text style={styles.notFound}>
                     Nenhum inspiracional encontrado.

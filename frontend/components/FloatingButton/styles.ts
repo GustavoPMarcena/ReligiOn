@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   button: {
     position: "absolute",
-
+    zIndex: 1,
     bottom: "8%",
     right: "5%",
     width: 56,

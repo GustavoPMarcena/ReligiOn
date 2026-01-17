@@ -10,6 +10,8 @@ import styles from "./styles";
 import { getImageSource } from "../../utils/getImageProfile";
 import Inspiration from "../../components/inspirations/inspiration/Inspiration";
 import { getUserInspirationApi } from "../../services/apiConectionInspirational";
+import TopBar from "../../components/TopBar/TopBar";
+import FloatingButton from "../../components/FloatingButton/FloatingButton";
 
 type User = { 
     id: string; 
@@ -60,31 +62,32 @@ export default function MeusInspiracionais() {
             behavior="padding"
             enabled
             >
-            <Button title="Criar inspiracional" onClick={() => { navigation.navigate('CriarInspiracional')}}/>
-            {inspiracionais.length === 0 ? (
-                <Text style={styles.notFound}>
-                    Nenhum inspiracional encontrado.
-                </Text>
-            ) : (
-                <FlatList
-                    data={inspiracionais}
-                    style={{ flex: 1, marginVertical: 10 }}
-                    keyExtractor={(item) => item.id}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) => {
-                        const imageProfile = getImageSource(item.user.image);
-                        return (
-                            <Inspiration
-                                title={item.title}
-                                content={item.content}
-                                userName={item.user.name}
-                                publishDate={formatDate(item.createdAt)}
-                                userProfile={imageProfile}
-                            />
-                        )
-                    }}
-                />
-            )}
+                <TopBar title="Meus Inspiracionais"/>
+                <FloatingButton onPress={() => {navigation.navigate('CriarInspiracional')}}/>
+                {inspiracionais.length === 0 ? (
+                    <Text style={styles.notFound}>
+                        Nenhum inspiracional encontrado.
+                    </Text>
+                ) : (
+                    <FlatList
+                        data={inspiracionais}
+                        style={{ flex: 1, marginVertical: 10 }}
+                        keyExtractor={(item) => item.id}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({ item }) => {
+                            const imageProfile = getImageSource(item.user.image);
+                            return (
+                                <Inspiration
+                                    title={item.title}
+                                    content={item.content}
+                                    userName={item.user.name}
+                                    publishDate={formatDate(item.createdAt)}
+                                    userProfile={imageProfile}
+                                />
+                            )
+                        }}
+                    />
+                )}
         </KeyboardAvoidingView>
     );
 }

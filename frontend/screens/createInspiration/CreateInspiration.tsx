@@ -1,12 +1,12 @@
 import { KeyboardAvoidingView, ScrollView, Text, View } from "react-native";
 import Input from "../../components/input/Input";
 import { globalStyles } from "../../global/css/globalStyles";
-import { styles } from "./styles";
 import TextArea from "../../components/textArea/TextArea";
 import Button from "../../components/button/Button";
 import { useState } from "react";
 import { createInspirationApi } from "../../services/apiConectionInspirational";
 import { useNavigation } from "@react-navigation/native";
+import TopBar from "../../components/TopBar/TopBar";
 
 export default function CreateInspiration() {
     const [title, setTitle] = useState("");
@@ -22,6 +22,7 @@ export default function CreateInspiration() {
     }
     return (
             <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
+                <TopBar title="Criar Inspiracional"/>
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
                     <View style={[globalStyles.content, {paddingTop: 20}]}>
                         <View style={globalStyles.form}>
