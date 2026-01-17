@@ -9,7 +9,8 @@ import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import TopBar from "../../components/TopBar/TopBar";
 import FloatingButton from "../../components/FloatingButton/FloatingButton";
-import SearchBar from "../../components/searchBar/SearchBar";
+import SearchBar from "../../components/SearchBar/SearchBar";
+
 
 export default function Inspiracional() {
     const [inspiracionais, setInspiracionais] = useState<

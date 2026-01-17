@@ -3,15 +3,15 @@ import styles from "./styles";
 import ActionBar from "../../actionBar/ActionBar";
 
 type Props = {
-    id: string,
+    id?: string,
     title: string,
     content: string,
     userName: string,
     publishDate: string,
     userProfile?: ImageSourcePropType,
     showActionBar?: boolean,
-    onDelete: (id: string) => void;
-    onEdit: (id: string) => void;
+    onDelete?: (id: string) => void;
+    onEdit?: (id: string) => void;
 }
 
 export default function Inspiration({id, title, content, userName, publishDate, userProfile, showActionBar= false, onDelete, onEdit} : Props){
