@@ -1,5 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
 import { InspirationalResponse } from "../../types/Inspirational";
 import { useAuth } from "../../hooks/useAuth";
 import { getUserApi } from "../../services/apiConectionUser";
@@ -32,6 +32,10 @@ export default function MeusInspiracionais() {
         );
     };
 
+    const handleEdit = (id: string) => {
+        navigation.navigate("EditInspiracional", { id });
+    }
+
     useEffect(() => {
         if (!user) return;
         const testUserApi = async () => {
@@ -52,18 +56,27 @@ export default function MeusInspiracionais() {
         return `${day}-${month}-${year}`;
     };
 
+
+    const getInspiracionais = async () => {
+        if (!currentUser) { return }
+        try {
+            const data = await getUserInspirationApi(currentUser?.id);
+            setInspiracionais(data);
+        } catch (error) {
+            console.error("Erro ao buscar inspiracionais:", error);
+        }
+    };
+
     useEffect(() => {
         if (!currentUser) { return }
-        const getInspiracionais = async () => {
-            try {
-                const data = await getUserInspirationApi(currentUser?.id);
-                setInspiracionais(data);
-            } catch (error) {
-                console.error("Erro ao buscar inspiracionais:", error);
-            }
-        };
         getInspiracionais();
     }, [currentUser]);
+
+    useFocusEffect(
+        useCallback(() => {
+            getInspiracionais();
+        }, [currentUser])
+    );
 
     return (
         <KeyboardAvoidingView
@@ -95,7 +108,7 @@ export default function MeusInspiracionais() {
                                 userProfile={imageProfile}
                                 showActionBar={true}
                                 onDelete={handleDelete}
-                                onEdit={(id) => navigation.navigate("Home")}
+                                onEdit={handleEdit}
                             />
                         )
                     }}

@@ -2,8 +2,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Text, View, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import { deleteInspirationApi } from "../../services/apiConectionInspirational";
-import { useState } from "react";
-import { InspirationalResponse } from "../../types/Inspirational";
+import { updateSermaoApi } from "../../services/ApiConectionSermao";
+import { useNavigation } from "@react-navigation/native";
 
 type Props = {
     id?: string,
@@ -12,9 +12,9 @@ type Props = {
 };
 
 export default function ActionBar({id, onDelete, onEdit}: Props) {
-
-    const handleDelete = async () =>{
-        if(!id) return;
+    const navigation = useNavigation();
+    if(!id) return;
+    const handleDelete = async () =>{       
         try{
             await deleteInspirationApi(id);
             onDelete?.(id);
@@ -25,7 +25,7 @@ export default function ActionBar({id, onDelete, onEdit}: Props) {
 
     return (
         <View style={styles.wrapper}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => onEdit?.(id)}>
                 <Text style={styles.text}>Editar</Text>
                 <Ionicons name="create-outline" size={20} color="#000" />
             </TouchableOpacity>

@@ -11,7 +11,7 @@ router.post('/inspiracionais', authenticateJWT, createInspiracional);
 router.get('/inspiracionais', authenticateJWT, getInspiracionais);
 
 // Obter os inspiracionais de um usuário 
-router.get('/inspiracionais/:userId', authenticateJWT, getInspiracionaisByUserId);
+router.get('/inspiracionais/user/:userId', authenticateJWT, getInspiracionaisByUserId);
 
 //  Inspiracional específico
 router.get('/inspiracionais/:id', authenticateJWT, getInspiracionalById);
