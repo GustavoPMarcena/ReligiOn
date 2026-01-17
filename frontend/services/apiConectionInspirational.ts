@@ -24,3 +24,8 @@ export const updateInspirationApi = async (id: string, inspiration: Inspirationa
 export const deleteInspirationApi = async (id: string): Promise<void> => {
   await api.delete(`/inspiracionais/${id}`);
 };
+
+export const getUserInspirationApi = async (userId: string): Promise<InspirationalResponse[]> => { 
+  const { data } = await api.get<InspirationalResponse[]>(`/inspiracionais/user/${userId}`); 
+  return data; 
+};

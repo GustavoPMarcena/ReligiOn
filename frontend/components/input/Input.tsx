@@ -9,11 +9,11 @@ interface Props {
     label: string,
     placeholder?: string,
     isPassword?: boolean,
-    value: string;
+    value?: string;
     onChangeText: (text: string) => void;
 }
 
-export default function Input({ type, label, placeholder, isPassword, onChangeText }: Props) {
+export default function Input({ type, label, placeholder, isPassword, value, onChangeText }: Props) {
     const [visible, setVisible] = useState(false);
 
     function changeVisible() {
@@ -32,7 +32,7 @@ export default function Input({ type, label, placeholder, isPassword, onChangeTe
                         </TouchableOpacity>
                     </View>
                 ) : (
-                    <TextInput style={styles.input} keyboardType={type} onChangeText={onChangeText} placeholder={placeholder} ></TextInput>
+                    <TextInput style={styles.input} keyboardType={type} onChangeText={onChangeText} placeholder={placeholder} value={value}></TextInput>
                 )}
             </View>
         </>

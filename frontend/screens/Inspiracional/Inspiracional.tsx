@@ -6,11 +6,17 @@ import { getInspirationsApi } from "../../services/apiConectionInspirational";
 import { InspirationalResponse } from "../../types/Inspirational";
 import { getImageSource } from "../../utils/getImageProfile";
 import styles from "./styles";
+import { useNavigation } from "@react-navigation/native";
+import TopBar from "../../components/TopBar/TopBar";
+import FloatingButton from "../../components/FloatingButton/FloatingButton";
+import SearchBar from "../../components/SearchBar/SearchBar";
+
 
 export default function Inspiracional() {
     const [inspiracionais, setInspiracionais] = useState<
         InspirationalResponse[]
     >([]);
+    const navigation = useNavigation<any>();
 
     const formatDate = (date: string) => { 
         const d = new Date(date); 
@@ -32,16 +38,15 @@ export default function Inspiracional() {
         getInspiracionais();
     }, []);
 
-    const botao = () =>{
-        console.log("teste de botão");
-    }
-
     return (
         <KeyboardAvoidingView
             style={[globalStyles.container, { flex: 1 }]}
             behavior="padding"
             enabled
         >
+            <TopBar title="Inspiracionais"/>
+            <SearchBar/>
+            <FloatingButton onPress={() => {navigation.navigate('CriarInspiracional')}}/>
             {inspiracionais.length === 0 ? (
                 <Text style={styles.notFound}>
                     Nenhum inspiracional encontrado.
@@ -54,8 +59,6 @@ export default function Inspiracional() {
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => {
                         const imageProfile = getImageSource(item.user.image);
-                        console.log("Imagem URL",imageProfile);
-                        console.log("User", item.user);
                         return (
                             <Inspiration
                                 title={item.title}

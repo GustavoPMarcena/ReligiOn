@@ -7,6 +7,8 @@ import EventDetails from '../screens/eventDetails/EventDetails';
 import CreateEvent from '../screens/CreateEvent/CreateEvent';
 import EditEvent from '../screens/EditEvent/EditEvent';
 import MyEvents from '../screens/MyEvents/MyEvents';
+import MeusInspiracionais from '../screens/meusInspiracionais/MeusInspiracionais';
+import EditInspiracional from '../screens/editInspiracional/EditInspiracional';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +23,8 @@ export default function AppRoutes() {
       <Stack.Screen options={{headerShown: false}} name="CreateEvent" component={CreateEvent} />
       <Stack.Screen options={{headerShown: false}} name="EditEvent" component={EditEvent} />
       <Stack.Screen options={{headerShown: false}} name="MyEvents" component={MyEvents} />
+      <Stack.Screen options={{headerShown: false}} name='MeusInspiracionais' component={MeusInspiracionais}/>
+      <Stack.Screen options={{headerShown: false}} name='EditInspiracional' component={EditInspiracional}/>
     </Stack.Navigator>
   );
 }

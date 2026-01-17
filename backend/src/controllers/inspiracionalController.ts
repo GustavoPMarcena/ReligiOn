@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import { error } from 'console';
 
 const prisma = new PrismaClient();
 
@@ -61,7 +62,30 @@ export const getInspiracionais = async (req: any, res: any) => {
     }
   };
   
-
+// Obter inspiracional de um usuário 
+export const getInspiracionaisByUserId = async( req: any, res: any) => { 
+  const userId = req.user.id; 
+  try{ 
+    const userInspircionais = await prisma.inspiracional.findMany({ 
+      where: { 
+        userId: userId, 
+      }, 
+      include:{ 
+        user:{ 
+          select:{ 
+            name: true, 
+            image: true, 
+          }, 
+        }, 
+      }, 
+    }); 
+    // console.error("Inspiracionais do user: ", userInspircionais);
+    return res.status(200).json(userInspircionais); 
+  } catch{ 
+    console.error("Erro ao buscar os inspiracionais do usuário", error); 
+    return res.status(500).json({ message: "Erro interno"}); 
+  } 
+}
 // Inspiracional específico pelo id
 export const getInspiracionalById = async (req: any, res: any) => {
   try {
