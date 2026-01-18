@@ -20,6 +20,7 @@ import { styles } from "./styles";
 import { useAuth } from "../../hooks/useAuth";
 import { deleteUserApi, updateUserApi } from "../../services/apiConectionUser";
 import { getImageSource } from "../../utils/getImageProfile";
+import ConfirmNotification from "../../components/ConfirmNotification/ConfirmNotification";
 
 export default function Profile() {
     const { logout, user, reloadUser } = useAuth();
@@ -32,15 +33,21 @@ export default function Profile() {
     const [email, setEmail] = useState(user?.email);
     const [func, setFunc] = useState(user?.role);
     const [phone, setPhone] = useState(user?.phone);
-
+    const [sucessAccount, setSucessAccount] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [showError, setShowError] = useState(false);
     const [pickedImage, setPickedImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
 
     useEffect(() => {
+        undoneChanges();
+    }, [user]);
+
+    function undoneChanges() {
         setName(user?.name);
         setEmail(user?.email);
         setFunc(user?.role);
         setPhone(user?.phone);
-    }, [user]);
+    }
 
     async function pickImage() {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -92,11 +99,19 @@ export default function Profile() {
             } as any);
         }
 
-        await updateUserApi(user.id, formData);
-        await reloadUser();
+        try {
+           await updateUserApi(user.id, formData);
+           await reloadUser(); 
+           setPickedImage(null);
+           setSucessAccount(true);
+        } catch (error: any) {
+            const message =
+                error?.response?.data?.message ||
+                "Erro ao atualizar. Tente novamente.";
 
-        setPickedImage(null);
-        setIsEditing(false);
+            setErrorMessage(message);
+            setShowError(true);
+        }
     }
 
     async function handleDeleteUser() {
@@ -105,9 +120,16 @@ export default function Profile() {
         logout();
     }
 
+    function handleCloseEditing() {
+        setSucessAccount(false);
+        setIsEditing(false);
+    }
+
     return (
         <KeyboardAvoidingView behavior="padding" enabled style={styles.scroll}>
             <ScrollView>
+                <ConfirmNotification title="Dados atualizados" visible={sucessAccount} confirmText="Ok" showCancel={false} onConfirm={() => {handleCloseEditing()}} />
+                <ConfirmNotification title={errorMessage ?? "Erro"} visible={showError} showCancel={false} onConfirm={() => {setShowError(false)}}/>
                 {isEditing ? (
                     <View>
                         <TopBar title="Editar perfil" />
