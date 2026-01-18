@@ -2,13 +2,14 @@ import { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { api } from "../api";
 import { createUserResponseType } from "../types/User";
-
+import { getUserApi } from "../services/apiConectionUser";
 
 interface Context {
     tokenState: string | null;
     user: createUserResponseType | null;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    reloadUser: () => Promise<void>;
 }
 
 export const AuthContext = createContext({} as Context);
@@ -54,10 +55,18 @@ export function AuthProviderContext({ children }: IProps) {
 
         if (tokenStorage && userStorage) {
             const userParsed = JSON.parse(userStorage);
-
+            
             api.defaults.headers.common.Authorization = `Bearer ${tokenStorage}`;
             setTokenState(tokenStorage);
             setUser(userParsed);
+        }
+    }
+
+    async function reloadUser() {
+        if(user?.email) {
+            const updatedUser = await getUserApi(user?.email);
+            setUser(updatedUser);
+            await AsyncStorage.setItem("auth.user", JSON.stringify(user));
         }
     }
 
@@ -66,7 +75,7 @@ export function AuthProviderContext({ children }: IProps) {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ tokenState, user, login, logout}} >
+        <AuthContext.Provider value={{ tokenState, user, login, logout, reloadUser}} >
             {children}
         </AuthContext.Provider>
     )

@@ -5,6 +5,7 @@ export type createUserType = {
     role: string;
     userType: 'LEADER' | 'MEMBER';
     phone: string;
+    image?: string,
 }
 
 export type createUserResponseType = {
@@ -12,6 +13,7 @@ export type createUserResponseType = {
     name: string;
     email: string;
     role: string;
+    image?: string,
     userType: 'LEADER' | 'MEMBER';
     phone: string;
 }

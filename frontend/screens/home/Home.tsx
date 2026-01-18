@@ -10,19 +10,11 @@ import Header from "../../components/header/Header";
 import { getUserApi, updateUserApi } from "../../services/apiConectionUser";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../../components/button/Button";
-
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  userType: 'LEADER' | 'MEMBER';
-  phone: string;
-};
+import { createUserType } from "../../types/User";
 
 export default function Home() {
   const { user } = useAuth();
-  const [actualUser, setActualUser] = useState<User | null>();
+  const [actualUser, setActualUser] = useState<createUserType | null>();
   const navigation = useNavigation<any>();
 
   useEffect(() => {

@@ -12,7 +12,8 @@ export const styles = StyleSheet.create({
     },
     image: {
         maxWidth: 140,
-        maxHeight: 140
+        maxHeight: 140,
+        borderRadius: 100
     },
     name: {
         fontFamily: 'JosefinBold',
@@ -24,6 +25,15 @@ export const styles = StyleSheet.create({
     },
     scroll: {
         paddingBottom: 20
+    },
+    editContainer: {
+        display: 'flex',
+        gap: 10,
+        padding: 20
+    },
+    buttonContainer: {
+        paddingTop: 20,
+        paddingHorizontal: 50
     }
 
 })

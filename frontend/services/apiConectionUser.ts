@@ -1,22 +1,5 @@
 import { api } from "../api";
-
-type createUserType = {
-    name: string;
-    email: string;
-    password?: string;
-    role: string;
-    userType: 'LEADER' | 'MEMBER';
-    phone: string;
-}
-
-type createUserResponseType = {
-    id: string,
-    name: string;
-    email: string;
-    role: string;
-    userType: 'LEADER' | 'MEMBER';
-    phone: string;
-}
+import { createUserResponseType, createUserType } from "../types/User";
 
 
 export const createUserApi = async (user: createUserType): Promise<createUserResponseType> => {
