@@ -41,5 +41,14 @@ export const styles = StyleSheet.create({
     },
     passwordIconVisible: {
         fontSize: 20
+    },
+    errorText: {
+        color: '#E63946',
+        fontSize: 12,
+        marginTop: 4,
+    },
+    inputError: {
+        borderColor: '#E63946',
+        borderWidth: 1,
     }
 });

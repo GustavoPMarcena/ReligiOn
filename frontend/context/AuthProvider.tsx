@@ -38,7 +38,7 @@ export function AuthProviderContext({ children }: IProps) {
             setUser(user);
 
         } catch (error: any) {
-            console.log("erro no login: ", error.response?.data?.message);
+            throw error;
         }
     }
 

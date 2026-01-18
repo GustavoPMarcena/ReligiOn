@@ -48,10 +48,6 @@ export default function Home() {
           <Text style={[globalStyles.titleStrong, styles.greeting]}>
             Olá, {actualUser?.name}
           </Text>
-
-          <Button title="logout" onClick={logout}/>
-          <Button title="Meus Inspiraionais" onClick={() => {navigation.navigate('MeusInspiracionais')}}/>
-
           <View style={styles.sectionSpacing}>
             <DayInspirational
               title="Inspiracional do dia!"

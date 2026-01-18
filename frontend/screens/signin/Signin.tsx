@@ -7,7 +7,8 @@ import { useNavigation } from "@react-navigation/native";
 import RadioInput from "../../components/radioInput/RadioInput";
 import Button from "../../components/button/Button";
 import { createUserApi } from "../../services/apiConectionUser";
-
+import { signinSchema } from "../../validation/siginSchema";
+import ConfirmNotification from "../../components/ConfirmNotification/ConfirmNotification";
 
 export default function Signin() {
     const [name, setName] = useState("");
@@ -15,22 +16,62 @@ export default function Signin() {
     const [role, setRole] = useState("");
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
+    const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string; role?: string; phone?: string; }>({});
     const [type, setType] = useState<"lider" | "membro">("lider");
     const [userType, setUserType] = useState<"LEADER" | "MEMBER">("LEADER");
+    const [sucessAccount, setSucessAccount] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [showError, setShowError] = useState(false);
+
     const navigation = useNavigation<any>();
 
+
     async function handleSubmit() {
-        setUserType((type == "membro") ? "MEMBER" : "LEADER");
-        const createdUser = await createUserApi({name, email, role, phone, password, userType})
-        setEmail(""); setName("");
-        setRole(""); setPhone(""); setPassword("");
-        console.log(createdUser);
-        navigation.navigate('Login');
+        const result = signinSchema.safeParse({
+            name,
+            role,
+            phone,
+            email,
+            password
+        });
+
+        if (!result.success) {
+            const fieldErrors = result.error.flatten().fieldErrors;
+
+            setErrors({
+                email: fieldErrors.email?.[0],
+                password: fieldErrors.password?.[0],
+                role: fieldErrors.role?.[0],
+                name: fieldErrors.name?.[0],
+                phone: fieldErrors.phone?.[0]
+            });
+
+            return;
+        }
+
+        setErrors({});
+        try {
+            setUserType((type == "membro") ? "MEMBER" : "LEADER");
+            const createdUser = await createUserApi({ name, email, role, phone, password, userType });
+            setSucessAccount(true);
+        } catch (error: any) {
+            const message =
+                error?.response?.data?.message ||
+                "Erro ao criar conta. Tente novamente.";
+
+            setErrorMessage(message);
+            setShowError(true);
+        }
+
+
+
     }
 
     return (
         <KeyboardAvoidingView behavior="padding" enabled>
-            <ScrollView 
+            <ConfirmNotification title="Conta criada" visible={sucessAccount} confirmText="Ok" showCancel={false} onConfirm={() => navigation.navigate("Login")} />
+            <ConfirmNotification title={errorMessage ?? "Erro"} visible={showError} showCancel={false} onConfirm={() => {setShowError(false)}}/>
+            <ScrollView
                 contentContainerStyle={{
                     flexGrow: 1,
                     paddingBottom: 100,
@@ -55,7 +96,11 @@ export default function Signin() {
                             placeholder="Ana Ferreira"
                             type="default"
                             value={name}
-                            onChangeText={setName}
+                            onChangeText={text => {
+                                setName(text);
+                                setErrors(prev => ({ ...prev, name: undefined }));
+                            }}
+                            error={errors.name}
                         />
 
                         <Input
@@ -63,7 +108,11 @@ export default function Signin() {
                             placeholder="anaferreira@gmail.com"
                             type="email-address"
                             value={email}
-                            onChangeText={setEmail}
+                            onChangeText={text => {
+                                setEmail(text);
+                                setErrors(prev => ({ ...prev, email: undefined }));
+                            }}
+                            error={errors.email}
                         />
 
                         <Input
@@ -71,14 +120,22 @@ export default function Signin() {
                             placeholder="Digite aqui sua função..."
                             type="default"
                             value={role}
-                            onChangeText={setRole}
+                            onChangeText={text => {
+                                setRole(text);
+                                setErrors(prev => ({ ...prev, role: undefined }));
+                            }}
+                            error={errors.role}
                         />
                         <Input
                             label="Telefone"
                             placeholder="80028922"
                             type="numeric"
                             value={phone}
-                            onChangeText={setPhone}
+                            onChangeText={text => {
+                                setPhone(text);
+                                setErrors(prev => ({ ...prev, phone: undefined }));
+                            }}
+                            error={errors.phone}
                         />
                         <RadioInput
                             value={type}
@@ -90,7 +147,11 @@ export default function Signin() {
                             label="Senha"
                             isPassword
                             value={password}
-                            onChangeText={setPassword}
+                            onChangeText={text => {
+                                setPassword(text);
+                                setErrors(prev => ({ ...prev, password: undefined }));
+                            }}
+                            error={errors.password}
                         />
                     </KeyboardAvoidingView>
 

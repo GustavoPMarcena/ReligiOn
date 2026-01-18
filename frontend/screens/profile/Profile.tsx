@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from "@react-navigation/native";
-
+import { updateUserSchema } from "../../validation/updateUserSchema";
 import TopBar from "../../components/TopBar/TopBar";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import Badge from "../../components/Badge/Badge";
@@ -24,7 +24,7 @@ import { getImageSource } from "../../utils/getImageProfile";
 export default function Profile() {
     const { logout, user, reloadUser } = useAuth();
     const navigation = useNavigation<any>();
-
+    const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string; role?: string; phone?: string; }>({});
     const userImage = getImageSource(user?.image ?? "");
 
     const [isEditing, setIsEditing] = useState(false);
@@ -57,6 +57,25 @@ export default function Profile() {
         if (!user?.id || !user?.userType) return;
         if (!name || !email || !phone || !func) return;
 
+        const result = updateUserSchema.safeParse({
+            name,
+            role: func,
+            phone,
+            email
+        });
+        console.log(result)
+        if (!result.success) {
+            const fieldErrors = result.error.flatten().fieldErrors;
+
+            setErrors({
+                email: fieldErrors.email?.[0],
+                role: fieldErrors.role?.[0],
+                name: fieldErrors.name?.[0],
+                phone: fieldErrors.phone?.[0]
+            });
+
+            return;
+        }
         const formData = new FormData();
 
         formData.append("name", name);
@@ -115,10 +134,26 @@ export default function Profile() {
                         </View>
 
                         <View style={styles.editContainer}>
-                            <Input type="default" label="Nome" value={name} onChangeText={setName} />
-                            <Input label="Email" type="email-address" value={email} onChangeText={setEmail} />
-                            <Input type="default" label="Função" value={func} onChangeText={setFunc} />
-                            <Input label="Telefone" type="numeric" value={phone} onChangeText={setPhone} />
+                            <Input type="default" label="Nome" value={name} onChangeText={text => {
+                                setName(text);
+                                setErrors(prev => ({ ...prev, name: undefined }));
+                            }} 
+                            error={errors.name}/>
+                            <Input label="Email" type="email-address" value={email} onChangeText={text => {
+                                setEmail(text);
+                                setErrors(prev => ({ ...prev, email: undefined }));
+                            }}
+                            error={errors.email} />
+                            <Input type="default" label="Função" value={func} onChangeText={text => {
+                                setFunc(text);
+                                setErrors(prev => ({ ...prev, role: undefined }));
+                            }}
+                            error={errors.role} />
+                            <Input label="Telefone" type="numeric" value={phone} onChangeText={text => {
+                                setPhone(text);
+                                setErrors(prev => ({ ...prev, phone: undefined }));
+                            }}
+                            error={errors.phone} />
 
                             <View style={styles.buttonContainer}>
                                 <Button title="Salvar" onClick={handleSaveUser} />
