@@ -7,8 +7,11 @@ interface EventCardProps {
   tagText: string;
   tagColor?: string;
   title: string;
-  dateText: string;
+  dateText?: string;
   onPress?: () => void;
+  showActionButtons?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 const EventCard: React.FC<EventCardProps> = ({
@@ -17,6 +20,9 @@ const EventCard: React.FC<EventCardProps> = ({
   title,
   dateText,
   onPress,
+  showActionButtons = false,
+  onEdit,
+  onDelete,
 }) => {
   return (
     <TouchableOpacity
@@ -33,12 +39,28 @@ const EventCard: React.FC<EventCardProps> = ({
 
       <View style={styles.divider} />
 
-      <View style={styles.dateContainer}>
-        <Ionicons name="calendar-outline" size={18} color="#555" />
-        <Text style={styles.dateText}>{dateText}</Text>
-      </View>
+      {showActionButtons ? (
+        <View style={styles.actionButtonsRow}>
+          <TouchableOpacity style={styles.actionButton} onPress={onEdit}>
+            <Ionicons name="create-outline" size={18} color="#000000" />
+            <Text style={styles.actionText}>Editar</Text>
+          </TouchableOpacity>
 
-      <View style={styles.divider} />
+          <TouchableOpacity style={styles.actionButton} onPress={onDelete}>
+            <Ionicons name="trash-outline" size={18} color="#000000" />
+            <Text style={[styles.actionText, { color: "#000000" }]}>Excluir</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        dateText && (
+          <View style={styles.dateContainer}>
+            <Ionicons name="calendar-outline" size={18} color="#555" />
+            <Text style={styles.dateText}>{dateText}</Text>
+          </View>
+        )
+      )}
+
+      {!showActionButtons && <View style={styles.divider} />}
     </TouchableOpacity>
   );
 };
