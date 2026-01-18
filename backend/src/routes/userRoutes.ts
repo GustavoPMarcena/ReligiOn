@@ -67,16 +67,32 @@ router.get('/users/:email', authenticateJWT, async (req: any, res: any) => {
 });
 
 // Atualizar usuário (rota protegida)
-router.put('/users/:id', authenticateJWT, async (req: any, res: any) => {
-  try {
-    const { id } = req.params;
-    const updatedUser = await updateUser(id, req.body);
-    return res.status(200).json(updatedUser);
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({ message: error instanceof Error ? error.message : 'Error updating user' });
+router.put(
+  '/users/:id',
+  authenticateJWT,
+  upload.single('image'),
+  async (req: any, res: any) => {
+    try {
+      const { id } = req.params;
+
+      const imageUrl = req.file
+        ? `/uploads/${req.file.filename}`
+        : undefined;
+
+      const updatedUser = await updateUser(id, {
+        ...req.body,
+        image: imageUrl
+      });
+
+      return res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error(error);
+      return res.status(400).json({
+        message: error instanceof Error ? error.message : 'Error updating user'
+      });
+    }
   }
-});
+);
 
 // Excluir usuário (rota protegida)
 router.delete('/users/:id', authenticateJWT, async (req: any, res: any) => {

@@ -12,10 +12,14 @@ export const getUserApi = async (email: string): Promise<createUserResponseType>
     return data;
 }
 
-export const updateUserApi = async (id: string, updatedUser: createUserType): Promise<createUserResponseType> => {
-    const { data } = await api.put(`/users/${id}`, updatedUser);
-    return data;
-}
+export const updateUserApi = async (id: string, data: FormData): Promise<createUserResponseType> => {
+  const response = await api.put(`/users/${id}`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+  return response.data;
+};
 
 export const deleteUserApi = async (id: string): Promise<void> => {
     await api.delete(`/users/${id}`);

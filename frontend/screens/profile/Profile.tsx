@@ -1,73 +1,125 @@
-import { KeyboardAvoidingView, View, Image, Text, TouchableOpacity, ScrollView } from "react-native";
+import {
+    KeyboardAvoidingView,
+    View,
+    Image,
+    Text,
+    TouchableOpacity,
+    ScrollView
+} from "react-native";
+import { useEffect, useState } from "react";
+import * as ImagePicker from 'expo-image-picker';
+import { useNavigation } from "@react-navigation/native";
+
 import TopBar from "../../components/TopBar/TopBar";
 import MenuButton from "../../components/MenuButton/MenuButton";
-import { styles } from "./styles";
-import { useAuth } from "../../hooks/useAuth";
-import { useNavigation } from "@react-navigation/native";
-import { deleteUserApi } from "../../services/apiConectionUser";
-import { useState } from "react";
 import Badge from "../../components/Badge/Badge";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/Button";
-import ConfirmNotification from "../../components/ConfirmNotification/ConfirmNotification";
-import { updateUserApi } from "../../services/apiConectionUser";
-import { createUserType } from "../../types/User";
+import { Ionicons } from '@expo/vector-icons';
+import { styles } from "./styles";
+import { useAuth } from "../../hooks/useAuth";
+import { deleteUserApi, updateUserApi } from "../../services/apiConectionUser";
 import { getImageSource } from "../../utils/getImageProfile";
 
 export default function Profile() {
     const { logout, user, reloadUser } = useAuth();
+    const navigation = useNavigation<any>();
+
     const userImage = getImageSource(user?.image ?? "");
+
     const [isEditing, setIsEditing] = useState(false);
     const [name, setName] = useState(user?.name);
     const [email, setEmail] = useState(user?.email);
     const [func, setFunc] = useState(user?.role);
     const [phone, setPhone] = useState(user?.phone);
-    const navigation = useNavigation<any>();
 
-    async function handleDeleteUser() {
-        if (user?.id) {
-            console.log("aa")
-            await deleteUserApi(user.id);
-            logout();
+    const [pickedImage, setPickedImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
+
+    useEffect(() => {
+        setName(user?.name);
+        setEmail(user?.email);
+        setFunc(user?.role);
+        setPhone(user?.phone);
+    }, [user]);
+
+    async function pickImage() {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 0.7,
+        });
+
+        if (!result.canceled) {
+            setPickedImage(result.assets[0]);
         }
-        console.log("aa")
     }
 
     async function handleSaveUser() {
-        if (!name || !email || !phone || !func || !user?.userType) return;
-        if (user?.id) {
-            const updatedUser : createUserType = {
-                name,
-                email,
-                phone,
-                role: func,
-                userType: user?.userType
-            } 
-            const a = await updateUserApi(user.id, updatedUser);
-            console.log(a);
-            reloadUser();
-            setIsEditing(false);
+        if (!user?.id || !user?.userType) return;
+        if (!name || !email || !phone || !func) return;
+
+        const formData = new FormData();
+
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("phone", phone);
+        formData.append("role", func);
+        formData.append("userType", user.userType);
+
+        if (pickedImage) {
+            formData.append("image", {
+                uri: pickedImage.uri,
+                name: "profile.jpg",
+                type: "image/jpeg",
+            } as any);
         }
+
+        await updateUserApi(user.id, formData);
+        await reloadUser();
+
+        setPickedImage(null);
+        setIsEditing(false);
+    }
+
+    async function handleDeleteUser() {
+        if (!user?.id) return;
+        await deleteUserApi(user.id);
+        logout();
     }
 
     return (
         <KeyboardAvoidingView behavior="padding" enabled style={styles.scroll}>
-            <ScrollView >
+            <ScrollView>
                 {isEditing ? (
                     <View>
                         <TopBar title="Editar perfil" />
+
                         <View style={styles.profileView}>
-                            <TouchableOpacity style={styles.profileImageContainer}>
+                            <TouchableOpacity
+                                style={styles.profileImageContainer}
+                                onPress={pickImage}
+                                activeOpacity={0.8}
+                            >
                                 <Image
-                                    source={userImage}
-                                    style={styles.image} />
+                                    source={
+                                        pickedImage
+                                            ? { uri: pickedImage.uri }
+                                            : userImage
+                                    }
+                                    style={styles.image}
+                                />
+
+                                <View style={styles.cameraOverlay}>
+                                    <Ionicons name="camera" size={22} color="#fff" />
+                                </View>
                             </TouchableOpacity>
                         </View>
+
                         <View style={styles.editContainer}>
-                            <Input label="Nome" type="default" value={name} onChangeText={setName} />
+                            <Input type="default" label="Nome" value={name} onChangeText={setName} />
                             <Input label="Email" type="email-address" value={email} onChangeText={setEmail} />
-                            <Input label="Função" type="default" value={func} onChangeText={setFunc} />
+                            <Input type="default" label="Função" value={func} onChangeText={setFunc} />
                             <Input label="Telefone" type="numeric" value={phone} onChangeText={setPhone} />
+
                             <View style={styles.buttonContainer}>
                                 <Button title="Salvar" onClick={handleSaveUser} />
                             </View>
@@ -76,27 +128,44 @@ export default function Profile() {
                 ) : (
                     <View>
                         <TopBar title="Perfil" />
+
                         <View style={styles.profileView}>
                             <TouchableOpacity style={styles.profileImageContainer}>
-                                <Image
-                                    source={userImage}
-                                    style={styles.image} />
+                                <Image source={userImage} style={styles.image} />
                             </TouchableOpacity>
 
                             <Text style={styles.name}>{user?.name}</Text>
                             <Text style={styles.email}>{user?.email}</Text>
-                            <Badge texto={user?.userType == "LEADER" ? "Líder" : "Membro"} cor="#1D559FCC" />
+
+                            <Badge
+                                texto={user?.userType === "LEADER" ? "Líder" : "Membro"}
+                                cor="#1D559FCC"
+                            />
                         </View>
-                        <MenuButton title="Editar perfil" onPress={() => { setIsEditing(true) }} />
-                        <MenuButton iconName="book-outline" title="Meus Sermões" />
-                        <MenuButton iconName="chatbox-ellipses-outline" title="Meus inspiracionais" onPress={() => { navigation.navigate("MeusInspiracionais") }} />
-                        <MenuButton iconName="calendar-outline" title="Meus eventos" />
-                        <MenuButton iconName="log-out-outline" title="Sair" showArrow={false} onPress={() => { logout() }} />
-                        <MenuButton iconName="close-circle-outline" title="Excluir conta" onPress={() => { handleDeleteUser() }} showArrow={false} />
+
+                        <MenuButton title="Editar perfil" onPress={() => setIsEditing(true)} />
+                        <MenuButton title="Meus Sermões" iconName="book-outline" />
+                        <MenuButton
+                            title="Meus inspiracionais"
+                            iconName="chatbox-ellipses-outline"
+                            onPress={() => navigation.navigate("MeusInspiracionais")}
+                        />
+                        <MenuButton title="Meus eventos" iconName="calendar-outline" />
+                        <MenuButton
+                            title="Sair"
+                            iconName="log-out-outline"
+                            showArrow={false}
+                            onPress={logout}
+                        />
+                        <MenuButton
+                            title="Excluir conta"
+                            iconName="close-circle-outline"
+                            showArrow={false}
+                            onPress={handleDeleteUser}
+                        />
                     </View>
                 )}
-
             </ScrollView>
-        </KeyboardAvoidingView >
+        </KeyboardAvoidingView>
     );
 }

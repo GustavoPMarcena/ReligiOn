@@ -4,16 +4,16 @@ export const styles = StyleSheet.create({
     profileView: {
         display: 'flex',
         justifyContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
         paddingBottom: 20
     },
     profileImageContainer: {
-        
+
     },
     image: {
-        maxWidth: 140,
-        maxHeight: 140,
-        borderRadius: 100
+        width: 140,
+        height: 140,
+        borderRadius: 70,
     },
     name: {
         fontFamily: 'JosefinBold',
@@ -34,6 +34,14 @@ export const styles = StyleSheet.create({
     buttonContainer: {
         paddingTop: 20,
         paddingHorizontal: 50
-    }
+    },
+    cameraOverlay: {
+        position: 'absolute',
+        bottom: 6,
+        right: 6,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        borderRadius: 20,
+        padding: 6,
+    },
 
 })
