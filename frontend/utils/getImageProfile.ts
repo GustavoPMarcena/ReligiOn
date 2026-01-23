@@ -12,5 +12,5 @@ export const getImageSource = (
     if (image.startsWith("/uploads")){
         return { uri: `${BASE_URL}${image}`};
     }
-    return { uri: `${BASE_URL}/uploads/${image}`}
+    return { uri: `${BASE_URL}/${image}`}
 }

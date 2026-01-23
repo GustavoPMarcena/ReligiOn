@@ -201,13 +201,13 @@ export default function Profile() {
                         </View>
 
                         <MenuButton title="Editar perfil" onPress={() => setIsEditing(true)} />
-                        <MenuButton title="Meus Sermões" iconName="book-outline" />
+                        <MenuButton title="Meus Sermões" iconName="book-outline" onPress={() => {navigation.navigate("MeusSermoes")}}/>
                         <MenuButton
                             title="Meus inspiracionais"
                             iconName="chatbox-ellipses-outline"
                             onPress={() => navigation.navigate("MeusInspiracionais")}
                         />
-                        <MenuButton title="Meus eventos" iconName="calendar-outline" />
+                        <MenuButton title="Meus eventos" iconName="calendar-outline" onPress={() => {navigation.navigate("MyEvents")}} />
                         <MenuButton
                             title="Sair"
                             iconName="log-out-outline"

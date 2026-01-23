@@ -5,7 +5,8 @@ export type SermaoResponse = {
   date: string;
   mediaFile: string;
   userId: string;
-  user?: {
-    name: string;
+  user: {
+    name: string,
+    image: string;
   };
 };

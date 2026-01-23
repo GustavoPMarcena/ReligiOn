@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticateJWT } from '../middlewares/authMiddleware';
-import { createSermao, deleteSermao, getSermao, getSermaoById, updateSermao } from '../controllers/sermaoController';
+import { createSermao, deleteSermao, getSermao, getSermaoById, updateSermao, getSermoesByUserId } from '../controllers/sermaoController';
 import upload from '../middlewares/uploadMiddleware';
 const router = Router();
 
@@ -9,6 +9,9 @@ router.post('/sermao', authenticateJWT, upload.single("mediaFile"), createSermao
 
 // Obter todos
 router.get('/sermao', authenticateJWT, getSermao);
+
+// Obter os sermões de um usuário 
+router.get('/sermao/user/:userId', authenticateJWT, getSermoesByUserId);
 
 // Sermao específico
 router.get('/sermao/:id', authenticateJWT, getSermaoById);

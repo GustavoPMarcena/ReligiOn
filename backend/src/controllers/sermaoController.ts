@@ -7,7 +7,8 @@ export const createSermao = async (req: any, res: any) => {
     try {
       const { title, content, date } = req.body;
       const mediaFile = req.file; // Arquivo enviado via form-data
-  
+      console.log(req.headers["content-type"]);
+console.log(req.file);
       // Verifica se o userType é "LEADER"
       if (req.user.userType !== "LEADER") {
         return res.status(403).json({ message: "Only LEADER users can create sermões." });
@@ -44,6 +45,7 @@ export const getSermao = async (req: any, res: any) => {
                 user: {
                     select: {
                         name: true,
+                        image: true,
                     },
                 },
             },
@@ -55,6 +57,29 @@ export const getSermao = async (req: any, res: any) => {
         return res.status(500).json({ message: 'Something went wrong' });
     }
 };
+
+export const getSermoesByUserId = async( req: any, res: any) => { 
+  const userId = req.user.id; 
+  try{ 
+    const userSermoes = await prisma.sermao.findMany({ 
+      where: { 
+        userId: userId, 
+      }, 
+      include:{ 
+        user:{ 
+          select:{ 
+            name: true, 
+            image: true, 
+          }, 
+        }, 
+      }, 
+    }); 
+    return res.status(200).json(userSermoes); 
+  } catch (error){ 
+    console.error("Erro ao buscar os sermões do usuário", error); 
+    return res.status(500).json({ message: "Erro interno"}); 
+  } 
+}
 
 //Buscar sermão por ID
 export const getSermaoById = async (req: any, res: any) => {

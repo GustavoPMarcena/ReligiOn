@@ -71,6 +71,7 @@ export function AuthProviderContext({ children }: IProps) {
     }
 
     useEffect(() => {
+        reloadUser();
         loadLocalStorage();
     }, []);
 
