@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView, ScrollView, View, Text, ActivityIndicator } from "react-native";
 import TopBar from "../../components/TopBar/TopBar";
 import { useNavigation } from "@react-navigation/native";
@@ -53,26 +54,32 @@ export default function MyEvents() {
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [eventToDelete, setEventToDelete] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function loadEvents() {
-      try {
-        const allEvents: EventResponse[] = await getEventsApi();
+  useFocusEffect(
+    useCallback(() => {
+      async function loadEvents() {
+        try {
+          setLoading(true);
 
-        const myEvents = allEvents.filter(
-          (event) => event.user?.name && event.user.name === user?.name
-        );
+          const allEvents: EventResponse[] = await getEventsApi();
+          if (allEvents.length >= 1) {
+            const myEvents = allEvents.filter(
+              (event) => event.user?.name && event.user.name === user?.name
+            );
 
-        setEvents(myEvents);
-        setFilteredEvents(myEvents);
-      } catch (err) {
-        console.error("Erro ao carregar eventos:", err);
-      } finally {
-        setLoading(false);
+            setEvents(myEvents);
+            setFilteredEvents(myEvents);
+          }
+
+        } catch (err) {
+          console.error("Erro ao carregar eventos:", err);
+        } finally {
+          setLoading(false);
+        }
       }
-    }
 
-    loadEvents();
-  }, [user]);
+      loadEvents();
+    }, [user])
+  );
 
   useEffect(() => {
     if (searchText.trim() === "") {

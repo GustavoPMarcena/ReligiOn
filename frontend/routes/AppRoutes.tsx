@@ -13,6 +13,7 @@ import Profile from '../screens/profile/Profile';
 import Sermoes from '../screens/sermoes/sermoes/Sermoes';
 import CreateSermao from '../screens/sermoes/CreateSermao/CreateSermao';
 import MySermoes from '../screens/sermoes/MySermoes/MySermoes';
+import EditSermao from '../screens/sermoes/editSermao/EditSermao';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ export default function AppRoutes() {
       <Stack.Screen options={{headerShown: false}} name="Sermoes" component={Sermoes} />
       <Stack.Screen options={{headerShown: false}} name="CreateSermao" component={CreateSermao} />
       <Stack.Screen options={{headerShown: false}} name="MeusSermoes" component={MySermoes} />
+      <Stack.Screen options={{headerShown: false}} name="EditSermao" component={EditSermao} />
       <Stack.Screen options={{headerShown: false}} name="Inspiracional" component={Inspiracional} />
       <Stack.Screen options={{headerShown: false}} name="CriarInspiracional" component={CreateInspiration}/>
       <Stack.Screen options={{headerShown: false}} name="Eventos" component={Events}/>

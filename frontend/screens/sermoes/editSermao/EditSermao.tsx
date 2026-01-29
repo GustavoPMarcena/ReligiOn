@@ -1,9 +1,9 @@
 import { KeyboardAvoidingView, Text, ScrollView, View } from "react-native";
 import Button from "../../../components/button/Button";
 import { Calendar } from "react-native-calendars";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { createSermaoApi } from "../../../services/ApiConectionSermao";
+import { createSermaoApi, getSermaoByIdApi, updateSermaoApi } from "../../../services/ApiConectionSermao";
 import TopBar from "../../../components/TopBar/TopBar";
 import { globalStyles } from "../../../global/css/globalStyles";
 import TextArea from "../../../components/textArea/TextArea";
@@ -13,9 +13,12 @@ import * as ImagePicker from 'expo-image-picker';
 import { Platform } from "react-native";
 import ConfirmNotification from "../../../components/ConfirmNotification/ConfirmNotification";
 import { Modal, TouchableOpacity } from "react-native";
+import { useRoute } from "@react-navigation/native";
 import { sermaoSchema } from "../../../validation/sermaoSchema";
 
-export default function CreateSermao() {
+export default function EditSermao() {
+    const route = useRoute<any>();
+    const { sermaoId } = route.params;
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [date, setDate] = useState("");
@@ -25,6 +28,24 @@ export default function CreateSermao() {
     const [errorVisible, setErrorVisible] = useState(false);
     const navigation = useNavigation<any>();
     const [errors, setErrors] = useState<{ title?: string; content?: string; date?: string }>({});
+
+    useEffect(() => {
+        if (!sermaoId) return;
+
+        async function loadEvent() {
+            try {
+                const sermao = await getSermaoByIdApi(sermaoId);
+                setTitle(sermao.title);
+                setContent(sermao.content);
+                setDate(sermao.date);
+            } catch (err) {
+                console.error("Erro ao carregar evento:", err);
+            }
+        }
+
+        loadEvent();
+    }, [sermaoId]);
+
     async function handlePickImage() {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -53,36 +74,35 @@ export default function CreateSermao() {
                 });
                 return;
             }
-            if (!image) {
-                alert("Selecione uma imagem");
-                return;
-            }
 
             const formData = new FormData();
-            console.log("IMAGE:", image);
+
             formData.append("title", title);
             formData.append("content", content);
             formData.append("date", date);
 
-            formData.append("mediaFile", {
-                uri: image.uri,
-                name: "sermao.jpg",
-                type: "image/jpeg",
-            } as any);
 
+            if (image) {
+                formData.append("mediaFile", {
+                    uri: image.uri,
+                    name: "sermao.jpg",
+                    type: "image/jpeg",
+                } as any);
+            }
 
-            const sermao = await createSermaoApi(formData);
-            console.log(sermao)
-            navigation.navigate("MeusSermoes");
+            await updateSermaoApi(sermaoId, formData);
+
+            navigation.goBack();
         } catch (error: any) {
             console.log("Erro:", error.response?.data || error);
             setErrorVisible(true);
         }
     }
 
+
     return (
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-            <TopBar title="Criar Sermão" />
+            <TopBar title="Editar Sermão" />
             <ScrollView keyboardShouldPersistTaps="handled">
                 <View style={[globalStyles.content, { paddingTop: 20 }]}>
                     <View style={globalStyles.form}>

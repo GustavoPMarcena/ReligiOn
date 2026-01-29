@@ -27,7 +27,7 @@ export default function CreateEvent() {
   // estado para mostrar erros
   const [errorModalVisible, setErrorModalVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  
   function formatDate(d: Date | null) {
     if (!d) return "Selecione a data";
     return d.toLocaleDateString("pt-BR");
@@ -97,7 +97,8 @@ export default function CreateEvent() {
         longitude: lon,
       });
 
-      navigation.goBack();
+      navigation.navigate("MyEvents", { refresh: true });
+      
     } catch (error) {
       console.error("Erro ao criar evento:", error);
       setErrorMessage("Não foi possível criar o evento");

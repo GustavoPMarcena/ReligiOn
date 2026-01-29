@@ -12,6 +12,9 @@ import { getSermoesByUserApi } from "../../../services/ApiConectionSermao";
 import { getUserApi } from "../../../services/apiConectionUser";
 import FloatingButton from "../../../components/FloatingButton/FloatingButton";
 import { getImageSource } from "../../../utils/getImageProfile";
+import ConfirmNotification from "../../../components/ConfirmNotification/ConfirmNotification";
+import { deleteSermaoApi } from "../../../services/ApiConectionSermao";
+
 import styles from "./styles";
 
 export default function MySermoes() {
@@ -19,18 +22,32 @@ export default function MySermoes() {
     const navigation = useNavigation<any>();
     const { user } = useAuth();
     const [currentUser, setCurrentUser] = useState<createUserResponseType | null>();
+    const [sermaoDelete, setSermaoDelete] = useState<string | null>(null);
+    const [confirmVisible, setConfirmVisible] = useState(false);
 
     const normalizePath = (path: string) =>
         path.replace(/\\/g, "/");
 
     const handleDelete = (deletedId: string) => {
-        setSermoes(prev =>
-            prev.filter(item => item.id !== deletedId)
-        );
+        setSermaoDelete(deletedId);
+        console.log(sermaoDelete)
+        setConfirmVisible(true);
+    };
+
+    const deleteSermao = async () => {
+        console.log(sermaoDelete)
+        if (sermaoDelete) {
+            await deleteSermaoApi(sermaoDelete);
+            setSermoes(prev =>
+                prev.filter(item => item.id !== sermaoDelete)
+            );
+        }
+        setConfirmVisible(false);
+
     };
 
     const handleEdit = (id: string) => {
-        navigation.navigate("EditSermao", { id });
+        navigation.navigate("EditSermao", { sermaoId: id });
     }
 
     useEffect(() => {
@@ -45,7 +62,7 @@ export default function MySermoes() {
         };
         testUserApi();
     }, [user]);
-    
+
     const formatDate = (date: string) => {
         const d = new Date(date);
         const day = String(d.getDate()).padStart(2, "0");
@@ -83,7 +100,7 @@ export default function MySermoes() {
             enabled
         >
             <TopBar title="Meus Sermões" />
-            <FloatingButton onPress={() => { navigation.navigate('CriarSermao') }} />
+            <FloatingButton onPress={() => { navigation.navigate('CreateSermao') }} />
             {sermoes.length === 0 ? (
                 <Text style={styles.notFound}>
                     Nenhum inspiracional encontrado.
@@ -109,14 +126,24 @@ export default function MySermoes() {
                                 userProfile={imageProfile}
                                 imageSrc={imagePost}
                                 showActionBar={true}
-                                onDelete={handleDelete}
-                                onEdit={handleEdit}
+                                onDelete={() => handleDelete(item.id)}
+                                onEdit={() => handleEdit(item.id)}
                             />
                         )
                     }}
                 />
 
             )}
+            <ConfirmNotification
+                visible={confirmVisible}
+                title="Deseja realmente excluir este sermão?"
+                iconName="trash-outline"
+                iconColor="#C53030"
+                cancelText="Cancelar"
+                confirmText="Excluir"
+                onCancel={() => setConfirmVisible(false)}
+                onConfirm={deleteSermao}
+            />
         </KeyboardAvoidingView>
     );
 }

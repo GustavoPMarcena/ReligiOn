@@ -20,12 +20,15 @@ export const getSermoesByUserApi = async (userId: string): Promise<SermaoRespons
 };
 
 export const getSermaoByIdApi = async (id: string): Promise<SermaoResponse> => {
-  const { data } = await api.get(`/sermao/${id}`);
+  const { data } = await api.get<SermaoResponse>(`/sermao/${id}`);
   return data;
 };
 
 export const updateSermaoApi = async (id: string, formData: FormData) => {
-  const { data } = await api.put(`/sermao/${id}`, formData);
+  const { data } = await api.put(`/sermao/${id}`, formData, {
+  headers: {
+    "Content-Type": "multipart/form-data",
+  }});
   return data;
 };
 

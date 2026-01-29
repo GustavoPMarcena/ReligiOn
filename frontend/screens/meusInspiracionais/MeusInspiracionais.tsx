@@ -11,6 +11,8 @@ import Inspiration from "../../components/inspirations/inspiration/Inspiration";
 import { getUserInspirationApi } from "../../services/apiConectionInspirational";
 import TopBar from "../../components/TopBar/TopBar";
 import FloatingButton from "../../components/FloatingButton/FloatingButton";
+import { deleteInspirationApi } from "../../services/apiConectionInspirational";
+import ConfirmNotification from "../../components/ConfirmNotification/ConfirmNotification";
 
 type User = {
     id: string;
@@ -25,11 +27,24 @@ export default function MeusInspiracionais() {
     const [inspiracionais, setInspiracionais] = useState<InspirationalResponse[]>([]);
     const navigation = useNavigation<any>();
     const { user } = useAuth(); const [currentUser, setCurrentUser] = useState<User | null>();
+    const [inspirationalDelete, setInspirationalDelete] = useState<string | null>(null);
+    const [confirmVisible, setConfirmVisible] = useState(false);
 
-    const handleDelete = (deletedId: string) => {
-        setInspiracionais(prev =>
-            prev.filter(item => item.id !== deletedId)
-        );
+    const handleDelete = async (deletedId: string) => {
+        setInspirationalDelete(deletedId);
+        setConfirmVisible(true);
+    };
+
+    const deleteIspirational = async () => {
+        console.log(inspirationalDelete)
+        if (inspirationalDelete) {
+            await deleteInspirationApi(inspirationalDelete);
+            setInspiracionais(prev =>
+                prev.filter(item => item.id !== inspirationalDelete)
+            );
+        }
+        setConfirmVisible(false);
+
     };
 
     const handleEdit = (id: string) => {
@@ -107,13 +122,23 @@ export default function MeusInspiracionais() {
                                 publishDate={formatDate(item.createdAt)}
                                 userProfile={imageProfile}
                                 showActionBar={true}
-                                onDelete={handleDelete}
-                                onEdit={handleEdit}
+                                onDelete={() => handleDelete(item.id)}
+                                onEdit={() => handleEdit(item.id)}
                             />
                         )
                     }}
                 />
             )}
+            <ConfirmNotification
+                visible={confirmVisible}
+                title="Deseja realmente excluir este inspiracional?"
+                iconName="trash-outline"
+                iconColor="#C53030"
+                cancelText="Cancelar"
+                confirmText="Excluir"
+                onCancel={() => setConfirmVisible(false)}
+                onConfirm={deleteIspirational}
+            />
         </KeyboardAvoidingView>
     );
 }
